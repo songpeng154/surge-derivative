@@ -6,18 +6,36 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint --fix",
+    "lint-staged": "lint-staged --no-stash"
   },
   "dependencies": {
-    "vue": "^3.5.12"
+    "vue": "^3.5.13"
   },
   "devDependencies": {
-    "@types/node": "^22.9.0",
-    "@vitejs/plugin-vue": "^5.1.4",
-    "typescript": "~5.6.2",
-    "vite": "^5.4.10",
+    "@types/node": "^22.9.1",
+    "@vitejs/plugin-vue": "^5.2.0",
+    "eslint": "^9.15.0",
+    "eslint-plugin-vue": "^9.31.0",
+    "lint-staged": "^15.2.10",
+    "simple-git-hooks": "^2.11.1",
+    "typescript": "~5.6.3",
+    "typescript-eslint": "^8.15.0",
+    "vite": "^5.4.11",
     "vite-plugin-dts": "^4.3.0",
     "vitest": "^2.1.5",
-    "vue-tsc": "^2.1.8"
+    "vue-tsc": "^2.1.10"
+  },
+  "engines": {
+    "node": ">=18.12.0",
+    "pnpm": ">=8.7.0"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm type-check && pnpm lint-staged"
   }
 }
