@@ -1,0 +1,17 @@
+{
+  "name": "@surge/build",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "rollup": "^4.27.4"
+  }
+}
