@@ -1,17 +1,17 @@
-import type { Component, Plugin } from 'vue'
+import type { Component, Plugin, App } from 'vue'
 import { SchemaForm } from './schema-form'
 import { SchemaForm2 } from './schema-form2'
-
-// 是否已安装标识
-const INSTALLED_KEY = Symbol('INSTALLED_KEY')
+import { INSTALLED_KEY } from '@surge/constants'
 
 // 全部组件
-const COMPONENTS:Component[] = [ SchemaForm, SchemaForm2 ]
+const COMPONENTS: Component[] = [ SchemaForm, SchemaForm2 ]
 
-export default {
-    install(app) {
+const SurgeDerivative:Plugin = {
+    install(app: App) {
         if (app[INSTALLED_KEY]) return
         app[INSTALLED_KEY] = true
         COMPONENTS.forEach(comp => app.component(comp.name!, comp))
     }
-} satisfies Plugin
+}
+
+export default SurgeDerivative

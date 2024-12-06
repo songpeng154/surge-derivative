@@ -22,5 +22,8 @@ export const BUNDLE_PATH = resolve(ROOT_PATH, 'dist')
 // UMD包路径
 export const UMD_BUNDLE_PATH = resolve(BUNDLE_PATH, 'umd')
 
-// UMD输出文件路径
-export const UMD_FILE_PATH = resolve(UMD_BUNDLE_PATH, 'index.umd.js')
+// CJS包路径
+export const CJS_BUNDLE_PATH = resolve(BUNDLE_PATH, 'lib')
+
+// ESM包路径
+export const ESM_BUNDLE_PATH = resolve(BUNDLE_PATH, 'es')

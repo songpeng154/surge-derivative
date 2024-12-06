@@ -1,6 +1,6 @@
 {
   "name": "@surge/monorepo",
-  "private": false,
+  "private": true,
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
@@ -11,20 +11,24 @@
     "lint-staged": "lint-staged --no-stash"
   },
   "dependencies": {
+    "@surge/components": "workspace:*",
+    "@surge/constants": "workspace:*",
+    "@surge/utils": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^22.9.1",
+    "@types/node": "^22.10.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "eslint": "^9.15.0",
     "eslint-plugin-vue": "^9.31.0",
+    "esno": "*",
+    "sass": "^1.82.0",
     "lint-staged": "^15.2.10",
     "simple-git-hooks": "^2.11.1",
     "typescript": "~5.6.3",
     "typescript-eslint": "^8.15.0",
-    "esno": "*",
-    "vue": "^3.5.13",
     "vite": "^6.0.0",
     "vitest": "^2.1.5",
+    "vue": "^3.5.13",
     "vue-tsc": "^2.1.10"
   },
   "engines": {
@@ -36,5 +40,10 @@
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm type-check && pnpm lint-staged"
-  }
+  },
+  "workspaces": [
+    "packages/*",
+    "script/*",
+    ".docs"
+  ]
 }

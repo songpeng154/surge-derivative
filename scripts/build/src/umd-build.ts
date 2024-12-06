@@ -1,36 +1,35 @@
 import { rollup } from 'rollup'
-import vue from '@vitejs/plugin-vue'
-import esbuild from 'rollup-plugin-esbuild'
-import { ALL_COMPONENTS_PATH, UMD_FILE_PATH } from './utils/paths.ts'
-// import nodeResolve from '@rollup/plugin-node-resolve'
+import { UMD_BUNDLE_PATH } from './utils/paths.ts'
+import { resolve } from 'node:path'
+import { formatBundleFilename } from './utils'
+import { plugins } from './plugins.ts'
 
-const umdBuild = async () => {
+/**
+ * umd打包
+ * @param minify 是否压缩
+ */
+const umdBuild = async (minify: boolean) => {
     const build = await rollup({
-        input: ALL_COMPONENTS_PATH,
-        plugins: [
-            // 解析 .vue 文件
-            vue(),
-            // nodeResolve({}),
-            esbuild({
-                // minify:true
-            })
-        ],
+        // 入口文件
+        input: resolve('./entrance/default.ts'),
+        plugins: plugins(minify),
+        // 外部依赖
         external: [ 'vue' ]
     })
+
     await build.write({
         format: 'umd',
-        file: UMD_FILE_PATH,
-        name: 'SurgeDerive',
+        // 出口文件路径
+        file: resolve(UMD_BUNDLE_PATH, formatBundleFilename('index', minify, 'js')),
+        name: 'surgeDerivative',
         // 使用默认导出
         exports: 'default',
-        // sourcemap: true,
         // 全局变量
         globals: {
             vue: 'Vue'
         }
     })
 }
-
-umdBuild()
-
+umdBuild(true)
+umdBuild(false)
 export default umdBuild
