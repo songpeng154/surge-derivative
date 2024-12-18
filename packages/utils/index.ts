@@ -1,4 +1,5 @@
 export const utils = () => {
-    console.log('test')
+  console.log('test')
 }
 
+export * from './test.ts'

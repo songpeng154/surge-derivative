@@ -5,8 +5,13 @@ defineProps<{ name: string }>()
 </script>
 
 <template>
-  <div class="abc">{{ name }}</div>
+  <div class="abc">
+    {{ name }}
+  </div>
 </template>
 
-<style>
-</style>
+<!-- <style lang="scss"> -->
+<!-- .abc{ -->
+<!--  background: red; -->
+<!-- } -->
+<!-- </style> -->

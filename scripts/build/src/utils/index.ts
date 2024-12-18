@@ -6,13 +6,12 @@ import { ROOT_PATH } from './paths.ts'
  * @param minify 是否压缩
  * @param suffix 后缀
  */
-export const formatBundleFilename = (name: string, minify: boolean, suffix: string) => `${ name }${ minify ? '.min' : '' }.${ suffix }`
-
+export const formatBundleFilename = (name: string, minify: boolean, suffix?: string) => `${name}${minify ? '.min' : ''}${suffix ? `.${suffix}` : ''}`
 
 export const excludeFiles = (files: string[]) => {
-    const excludes = [ 'node_modules', 'test', 'mock', 'gulpfile', 'dist' ]
-    return files.filter((path) => {
-        const position = path.startsWith(ROOT_PATH) ? ROOT_PATH.length : 0
-        return !excludes.some((exclude) => path.includes(exclude, position))
-    })
+  const excludes = ['node_modules', 'test', 'mock', 'gulpfile', 'dist']
+  return files.filter((path) => {
+    const position = path.startsWith(ROOT_PATH) ? ROOT_PATH.length : 0
+    return !excludes.some(exclude => path.includes(exclude, position))
+  })
 }

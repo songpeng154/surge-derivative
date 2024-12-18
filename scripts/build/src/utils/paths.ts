@@ -2,19 +2,16 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 // 根路径
-export const ROOT_PATH = resolve(dirname(fileURLToPath(import.meta.url)),'..','..', '..', '..')
+export const ROOT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '..')
 
 // 项目路径
 export const PACKAGES_PATH = resolve(ROOT_PATH, 'packages')
 
-// 组件模块路径
-export const COMPONENTS_PATH = resolve(PACKAGES_PATH,'components')
+// 出口路径
+export const ENTRANCE_PATH = resolve(PACKAGES_PATH, 'entrance')
 
 // 全部组件路径
-export const ALL_COMPONENTS_PATH = resolve(COMPONENTS_PATH,'all.ts')
-
-// 按需组件路径
-export const NAMED_COMPONENTS_PATH = resolve(COMPONENTS_PATH, 'index.ts')
+export const ALL_COMPONENTS_PATH = resolve(ENTRANCE_PATH, 'default.ts')
 
 // 包路径
 export const BUNDLE_PATH = resolve(ROOT_PATH, 'dist')

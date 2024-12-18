@@ -5,12 +5,12 @@
     <title>Title</title>
     <script src="https://unpkg.com/vue@3"></script>
     <script src="./dist/umd/index.js"></script>
-    <link rel="stylesheet" href="./dist/umd/index.css"></link>
+    <link rel="stylesheet" href="./dist/umd/index.css"/>
 </head>
 <body>
 <div id="app">
     <div>111</div>
-    <schema-form :name="'ssssdddd'">sss</schema-form>
+    <schema-form :name="message">sss</schema-form>
 </div>
 <script>
     const App = {
@@ -20,10 +20,10 @@
             };
         },
     };
-    console.log(surgeDerivative);
+    console.log(SurgeKit);
     const app = Vue.createApp(App);
-    surgeDerivative.test()
-    app.use(surgeDerivative.SurgeComponents);
+    // SurgeKit.test()
+    app.use(SurgeKit.SurgeComponents);
     app.mount("#app");
 </script>
 </body>

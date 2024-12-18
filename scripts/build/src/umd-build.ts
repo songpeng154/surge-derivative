@@ -1,35 +1,38 @@
-import { rollup } from 'rollup'
-import { UMD_BUNDLE_PATH } from './utils/paths.ts'
-import { resolve } from 'node:path'
-import { formatBundleFilename } from './utils'
+import { build } from 'vite'
+import { external } from './build-info.ts'
 import { plugins } from './plugins.ts'
+import { formatBundleFilename } from './utils'
+import { ALL_COMPONENTS_PATH, UMD_BUNDLE_PATH } from './utils/paths.ts'
 
 /**
  * umd打包
  * @param minify 是否压缩
  */
 const umdBuild = async (minify: boolean) => {
-    const build = await rollup({
-        // 入口文件
-        input: resolve('./entrance/default.ts'),
-        plugins: plugins(minify),
-        // 外部依赖
-        external: [ 'vue' ]
-    })
-
-    await build.write({
-        format: 'umd',
-        // 出口文件路径
-        file: resolve(UMD_BUNDLE_PATH, formatBundleFilename('index', minify, 'js')),
-        name: 'surgeDerivative',
-        // 使用默认导出
-        exports: 'default',
-        // 全局变量
-        globals: {
-            vue: 'Vue'
-        }
-    })
+  await build({
+    plugins: plugins(false),
+    build: {
+      minify,
+      rollupOptions: {
+        external,
+        output: {
+          format: 'umd',
+          name: 'SurgeKit',
+          dir: UMD_BUNDLE_PATH,
+          entryFileNames: formatBundleFilename('index', minify, 'js'),
+          globals: {
+            vue: 'Vue',
+          },
+        },
+      },
+      lib: {
+        entry: ALL_COMPONENTS_PATH,
+        name: 'SurgeKit',
+        cssFileName: formatBundleFilename('index', minify),
+      },
+      emptyOutDir: true,
+    },
+  })
 }
 umdBuild(true)
 umdBuild(false)
-export default umdBuild

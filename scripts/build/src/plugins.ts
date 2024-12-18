@@ -1,53 +1,51 @@
+import type { PluginOption } from 'vite'
+import type { PluginOptions } from 'vite-plugin-dts'
+import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
-import nodeResolve from '@rollup/plugin-node-resolve'
-import esbuild from 'rollup-plugin-esbuild'
-import replace from '@rollup/plugin-replace'
-import commonJs from '@rollup/plugin-commonjs'
-import postcss from 'rollup-plugin-postcss'
-import autoprefixer from 'autoprefixer'
-import cssnano from 'cssnano'
+import dts from 'vite-plugin-dts'
+import { CJS_BUNDLE_PATH, ENTRANCE_PATH, ESM_BUNDLE_PATH, PACKAGES_PATH, ROOT_PATH } from './utils/paths.ts'
+
+// 生成类型插件
+const dtsPlugin = (options: PluginOptions) => {
+  return dts({
+    // 输出路径 （输出到：dist/lib dist/es）
+    outDir: [CJS_BUNDLE_PATH, ESM_BUNDLE_PATH],
+    // 将 .vue.d.ts 转成 .d.ts
+    cleanVueFileName: true,
+    // tsconifg路径
+    tsconfigPath: resolve(ROOT_PATH, 'tsconfig.json'),
+    ...options,
+  })
+}
 
 /**
  * 插件集合
- * @param minify 是否压缩
+ * @param isGenerateTypeFile 是否生成ts类型文件
  */
-export const plugins = (minify: boolean) => {
-    return [
-        // 解析 .vue 文件
-        vue(),
-        // 解析 npm 包
-        nodeResolve({
-            // 让该插件识别以下文件
-            extensions: [ '.mjs', '.js', '.json', '.ts' ]
-        }),
-        // 利用 esbuild 高效的性能和功能来进行 JavaScript/TypeScript 的代码编译和转译
-        esbuild({
-            // 目标环境（兼容 es2018）
-            target: 'es2018',
-            // 是否压缩
-            minify: minify,
-            // 是否源代码映射
-            sourceMap: minify,
-            // 当遇到.vue文件使用ts来处理
-            loaders: {
-                '.vue': 'ts'
-            }
-        }),
-        postcss({
-            // 将 css提取到单独的文件
-            extract: 'index.css',
-            plugins: [
-                // 自动加CSS前缀
-                autoprefixer(),
-                // 压缩 CSS
-                cssnano()
-            ],
-        }),
-        replace({
-            'process.env.NODE_ENV': JSON.stringify('production'),
-            preventAssignment: true
-        }),
-        commonJs()
-    ]
-}
+export const plugins = (isGenerateTypeFile: boolean) => {
+  const plugins: PluginOption[] = [
+    // 解析 .vue 文件
+    vue(),
+    // cssInjectedByJsPlugin({
+    //     jsAssetsFilterFunction: function customJsAssetsfilterFunction(outputChunk) {
+    //         return outputChunk.fileName.includes('.vue')
+    //     },
+    // })
+  ]
 
+  isGenerateTypeFile && plugins.push(...[
+    dtsPlugin({
+      // 入口路径 packages
+      entryRoot: PACKAGES_PATH,
+      // 排除 packages/entrance
+      exclude: [ENTRANCE_PATH],
+    }),
+    // 将 packages/entrance 下的类型生成到 dist/es 和 dist/lib下面
+    dtsPlugin({
+      // 入口路径 packages/entrance
+      entryRoot: ENTRANCE_PATH,
+    }),
+  ])
+
+  return plugins
+}
